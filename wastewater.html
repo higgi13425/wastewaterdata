@@ -131,6 +131,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stderr">
 <pre><code>here() starts at /Users/peterhiggins/Documents/RCode/wastewaterdata</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gtsummary)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'gtsummary' was built under R version
+4.5.2</code></pre>
+</div>
 </div>
 <section id="new-data" class="level2">
 <h2 class="anchored" data-anchor-id="new-data">New Data</h2>
@@ -150,7 +155,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Then when asked for a Repository URL, paste in the following:</p>
 <p><a href="https://github.com/higgi13425/wastewaterdata.git" class="uri">https://github.com/higgi13425/wastewaterdata.git</a></p>
 <p>then Click on the the “Create Project” button</p>
-<p>For future projects you can navigate to the project on Github, e.g.&nbsp;<br>
+<p>For future projects you can navigate to the project on Github, e.g.<br>
 <a href="https://github.com/higgi13425/wastewaterdata" class="uri">https://github.com/higgi13425/wastewaterdata</a></p>
 <p>Click on the dropdown arrow on the green Code button, and clone the HTTPS url, by clicking on the copy button to the right.</p>
 <p>Now you have your own local copy of the project.</p>
@@ -180,7 +185,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="reading-in-the-csv-file">Reading in the csv file</h2>
 <p>Start by running this code chunk to assign the data to the object <code>ww</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ww<span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'WWSCAN_AllPlants_SDR_2025.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ww<span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(<span class="st">'WWSCAN_AllPlants_SDR_2025.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 28217 Columns: 69
 ── Column specification ────────────────────────────────────
@@ -199,9 +204,9 @@ dbl (64): Month, Day, Year, Population_Served, BCoV_Reco...
 <p>Run the code below to filter the data to a single state using the State_Abbr variable.</p>
 <p>Be sure to have already loaded the tidyverse and here packages in the initial code chunk in this qmd document.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>ww <span class="sc">|&gt;</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State_Abbr <span class="sc">==</span> <span class="st">'FL'</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(City)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>ww <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(State_Abbr <span class="sc">==</span> <span class="st">'FL'</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(City)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 7 × 1
   City            
@@ -226,7 +231,84 @@ dbl (64): Month, Day, Year, Population_Served, BCoV_Reco...
 <li><p>How many sites are participating overall?</p></li>
 <li><p>How many sites are participating in your home state?</p></li>
 <li><p>Where are these sites located?</p></li>
+<li><p>How many samples have been collected in your state?</p></li>
+<li><p>Which site has collected the most samples? (overall, or in your state)</p></li>
+<li><p>What is the largest number of samples collected by one site?</p></li>
 </ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>ww <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="co">#vfilter(State_Abbr == 'CA') |&gt; </span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Plant) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 147 × 2
+# Groups:   Plant [147]
+   Plant                            n
+   &lt;chr&gt;                        &lt;int&gt;
+ 1 Gilroy, CA                     442
+ 2 Sacramento, CA                 442
+ 3 San Jose, CA                   441
+ 4 Palo Alto, CA                  440
+ 5 Sunnyvale, CA                  438
+ 6 Southeast San Francisco, CA    429
+ 7 Oceanside, San Francisco, CA   424
+ 8 Redwood City, CA               317
+ 9 Las Vegas, NV                  203
+10 Bloomington, IN                198
+# ℹ 137 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="making-a-table-of-sites" class="level2">
+<h2 class="anchored" data-anchor-id="making-a-table-of-sites">Making a Table of Sites</h2>
+<p>Use gtsummary to make a pretty HTML table of sites in one state, arranged by number of samples collected. Try to pick different states.</p>
+</section>
+<section id="making-a-table-of-infectious-agents" class="level2">
+<h2 class="anchored" data-anchor-id="making-a-table-of-infectious-agents">Making a Table of Infectious Agents</h2>
+<p>Use gtsummary to make a pretty HTML table of the infectious agents being tracked, arranged by number of non-zero / non-missing samples collected.</p>
+</section>
+<section id="tracking-trends" class="level2">
+<h2 class="anchored" data-anchor-id="tracking-trends">Tracking Trends</h2>
+<p>Use the select function and ggplot 2 line graphs to track time trends in one particular infection. Pick a seasonally trendy one like</p>
+<ul>
+<li><p>RSV</p></li>
+<li><p>Influenza A</p></li>
+<li><p>COVID</p></li>
+<li><p>Influenza B</p></li>
+<li><p>Norovirus</p></li>
+<li><p>Enterovirus D68</p></li>
+</ul>
+<p>When are the seasonal peaks nationally?</p>
+</section>
+<section id="go-local" class="level2">
+<h2 class="anchored" data-anchor-id="go-local">Go local</h2>
+<p>Challenges</p>
+<ul>
+<li><p>Look at your local state or local Plant. Filter the results down to your local wastewater. Look at all of the infections over the past year. Plot incidence (Y) vs time (X axis). What seasonal trends do you see locally?</p></li>
+<li><p>If you see seasonal trends in one infectious agent, are these pretty much the same across the state, or do they vary regionally? Does RSV (or Noro, or other bugs) arrive later in some regions?</p></li>
+</ul>
+</section>
+<section id="share-what-you-have-learned" class="level2">
+<h2 class="anchored" data-anchor-id="share-what-you-have-learned">Share what You Have Learned</h2>
+<p>Contribute to the repository</p>
+<ul>
+<li><p>first, save your qmd once it is working</p></li>
+<li><p>render your QMD to HTML (the rightward blue arrow) to see a pretty version</p></li>
+<li><p>Commit your changes (in the Git tab) - add a commit message to explain what you did.</p></li>
+<li><p>Push (the upward green arrow) your branch changes to GitHub</p></li>
+</ul>
+</section>
+<section id="is-it-ready-for-production" class="level2">
+<h2 class="anchored" data-anchor-id="is-it-ready-for-production">Is it Ready for Production?</h2>
+<p>Then make a pull request. Go to the Github site at <a href="https://github.com/higgi13425/wastewaterdata" class="uri">https://github.com/higgi13425/wastewaterdata</a></p>
+<p>If you have successfully pushed your branch changes, you will see a big green button - Compare &amp; Pull Request. Click on this button.</p>
+<ul>
+<li><p>add an informative title</p></li>
+<li><p>add a detailed description of what you created in this branch</p></li>
+<li><p>then scroll down to the green button - and click on Create pull request</p></li>
+</ul>
+<p>Then I (the owner of the repo) will get this pull request, and I can compare the differences between the main branch and your branch. I can merge your changes (pull them in) to the main branch. We can collaborate by working on different tables, figures, models, etc. in distinct branches. We can also review each other’s code by reviewing different branches or merges, all via GitHub.</p>
 </section>
 
 </main>
