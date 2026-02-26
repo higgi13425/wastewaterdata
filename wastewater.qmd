@@ -169,4 +169,18 @@ Contribute to the repository
 
 -   Commit your changes (in the Git tab) - add a commit message to explain what you did.
 
--   
+-   Push (the upward green arrow) your branch changes to GitHub
+
+## Is it Ready for Production?
+
+Then make a pull request. Go to the Github site at <https://github.com/higgi13425/wastewaterdata>
+
+If you have successfully pushed your branch changes, you will see a big green button - Compare & Pull Request. Click on this button.
+
+-   add an informative title
+
+-   add a detailed description of what you created in this branch
+
+-   then scroll down to the green button - and click on Create pull request
+
+Then I (the owner of the repo) will get this pull request, and I can compare the differences between the main branch and your branch. I can merge your changes (pull them in) to the main branch. We can collaborate by working on different tables, figures, models, etc. in distinct branches. We can also review each other's code by reviewing different branches or merges, all via GitHub.
