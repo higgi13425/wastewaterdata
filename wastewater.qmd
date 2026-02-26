@@ -119,7 +119,7 @@ Add an R chunk to this qmd in your branch and try to answer each question.
 
 ```{r}
 ww |> 
-  #vfilter(State_Abbr == 'CA') |> 
+  #filter(State_Abbr == 'CA') |> 
   group_by(Plant) |> 
   count() |> 
   arrange(desc(n))
@@ -155,9 +155,17 @@ When are the seasonal peaks nationally?
 
 Challenges
 
--   Look at your local state or local Plant. Filter the results down to your local wastewater. Look at all of the infections over the past year. Plot incidence (Y) vs time (X axis). What seasonal trends do you see locally?
+-   Look at your local state or local Plant. Filter the results down to your local wastewater. Look at all of the infections over the past year. Plot incidence (Y) vs time (X axis). Consider using geom_line and geom_smooth. What seasonal trends do you see locally?
 
 -   If you see seasonal trends in one infectious agent, are these pretty much the same across the state, or do they vary regionally? Does RSV (or Noro, or other bugs) arrive later in some regions?
+
+```{r}
+ww |> 
+  filter(City == "Ann Arbor") |> 
+  mutate(
+    date = as.Date(paste0(Year, "-", Month, "-", Day))) 
+  
+```
 
 ## Share what You Have Learned
 
