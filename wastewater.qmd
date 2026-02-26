@@ -7,6 +7,7 @@ editor: visual
 ```{r}
 library(tidyverse)
 library(here)
+library(gtsummary)
 ```
 
 ## New Data
@@ -109,3 +110,63 @@ Add an R chunk to this qmd in your branch and try to answer each question.
 -   How many sites are participating in your home state?
 
 -   Where are these sites located?
+
+-   How many samples have been collected in your state?
+
+-   Which site has collected the most samples? (overall, or in your state)
+
+-   What is the largest number of samples collected by one site?
+
+```{r}
+ww |> 
+  #vfilter(State_Abbr == 'CA') |> 
+  group_by(Plant) |> 
+  count() |> 
+  arrange(desc(n))
+```
+
+## Making a Table of Sites
+
+Use gtsummary to make a pretty HTML table of sites in one state, arranged by number of samples collected. Try to pick different states.
+
+## Making a Table of Infectious Agents
+
+Use gtsummary to make a pretty HTML table of the infectious agents being tracked, arranged by number of non-zero / non-missing samples collected.
+
+## Tracking Trends
+
+Use the select function and ggplot 2 line graphs to track time trends in one particular infection. Pick a seasonally trendy one like
+
+-   RSV
+
+-   Influenza A
+
+-   COVID
+
+-   Influenza B
+
+-   Norovirus
+
+-   Enterovirus D68
+
+When are the seasonal peaks nationally?
+
+## Go local
+
+Challenges
+
+-   Look at your local state or local Plant. Filter the results down to your local wastewater. Look at all of the infections over the past year. Plot incidence (Y) vs time (X axis). What seasonal trends do you see locally?
+
+-   If you see seasonal trends in one infectious agent, are these pretty much the same across the state, or do they vary regionally? Does RSV (or Noro, or other bugs) arrive later in some regions?
+
+## Share what You Have Learned
+
+Contribute to the repository
+
+-   first, save your qmd once it is working
+
+-   render your QMD to HTML (the rightward blue arrow) to see a pretty version
+
+-   Commit your changes (in the Git tab) - add a commit message to explain what you did.
+
+-   
