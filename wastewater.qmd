@@ -1,0 +1,22 @@
+---
+title: "wwdata"
+format: html
+editor: visual
+---
+
+```{r}
+library(tidyverse)
+library(here)
+```
+
+## New Data
+
+Today we will explore some epidemiologic data on surveillance of wastewater solids for infectious agents. These data come from the WastewaterScan team (see their dashboard here <https://data.wastewaterscan.org/>). This project samples wastewater solids from across most of the US (40 states, 150 treatment plants). Samples from wastewater treatment plants are sent weekly to the Boehm lab at Stanford, where PCR for infections agents is performed, and data are displayed on a dashboard.You can learn more about the project here <https://www.wastewaterscan.org/en>.
+
+You can even download the 2024-2025 data as a csv file from this Stanford Repository <https://purl.stanford.edu/jd535xb1898>.
+
+## Loading this Project
+
+Rather than doing this from scratch, you can download the whole project (and work on it) from Github.
+
+Just open R, create a New Project, select 'From Version Control', then 'Git', then "Github'
