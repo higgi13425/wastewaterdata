@@ -196,7 +196,7 @@ ww |>
 
 ## Share what You Have Learned
 
-Contribute to the repository
+Contribute to the repository =
 
 -   first, save your qmd once it is working
 
