@@ -168,7 +168,7 @@ When are the seasonal peaks nationally?
 
 ## Go local
 
-Challenges
+Challenges -
 
 -   Look at your local state or local Plant. Filter the results down to your local wastewater. Look at all of the infections over the past year. Plot incidence (Y) vs time (X axis). Consider using geom_line and geom_smooth. What seasonal trends do you see locally?
 
