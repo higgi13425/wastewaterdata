@@ -1,5 +1,5 @@
 ---
-title: "wwdata"
+title: "Wastewater Data"
 format: html
 editor: visual
 ---
@@ -22,7 +22,7 @@ Rather than doing this from scratch, you can download the whole project (and wor
 
 Just
 
--   open R
+-   open R/RStudio
 
 -   Select File/New Project..
 
@@ -43,7 +43,9 @@ Click on the dropdown arrow on the green Code button, and clone the HTTPS url, b
 
 Now you have your own local copy of the project.
 
-This opens on the main branch. In order to avoid stomping on other people's code, create a new working branch of your own, by clicking on the branch icon (two purple branches) within the Git pane at top right. Name your working branch something like "working_myname". You can also name it after what you are working on in that particular branch, like "table_one", or "figure_3". When your branch is finished, you can create a pull request (aka PR) to ask the owner of the repository (repo) to merge your changes into the main (aka production) branch.
+This opens on the main branch. In order to avoid stomping on other people's code, create a new working branch of your own, by clicking on the branch icon (two purple branches) within the Git pane at top right. Name your working branch something like "working_myname". You can also name it after what you are working on in that particular branch, like "table_one", or "figure_3".
+
+You may need to have a Github account and be logged in to create a new branch. When your branch is finished, you can create a pull request (aka PR) to ask the owner of the repository (repo) to merge your changes into the main (aka production) branch.
 
 A quick video on pull requests (using the git command line interface or CLI) for beginners can be found in this [video](https://www.youtube.com/watch?v=nCKdihvneS0).
 
@@ -65,7 +67,7 @@ We will start by
 
 -   Exploring the dataset
 
--   Making Table1 like tables using gtsummary
+-   Making Table1-like tables using gtsummary
 
 -   Looking at trends over time with ggplot2
 
@@ -78,7 +80,7 @@ We will start by
 Start by running this code chunk to assign the data to the object `ww`.
 
 ```{r}
-ww<- readr::read_csv('WWSCAN_AllPlants_SDR_2025.csv')
+ww <- readr::read_csv('WWSCAN_AllPlants_SDR_2025.csv')
 ```
 
 This `ww` object should now show up in your Environment with 28217 observations of 69 variables. Use the View() function to take a look at it. Each observation starts with a site and a date of collection, then gives a variety of results for different (abbreviated) infectious agents. There is a point estimate and a lower and upper confidence bound for each infectious agent (3 columns each). Compare the infectious agents shown on the dashboard to the column names in the ww object. Can you pick out Norovirus G2, Rotavirus, RSV, Enterovirus D68, Influenza A and B, SARS-CoV-2, Hepatitis A, Candida auris, etc. Remember that there will be 3 columns for each infectious agent, the estimate, the LC bound (LCI) and the UC bound (UCI).
@@ -91,8 +93,8 @@ Be sure to have already loaded the tidyverse and here packages in the initial co
 
 ```{r}
 ww |> 
-  filter(State_Abbr == 'FL') |> 
-  distinct(City)
+  filter(State_Abbr == 'MA') |> 
+  distinct(Plant)
 ```
 
 By adding the distinct function we can see that there are 10 different sites in Florida that participate in the Wastewater scan project. Try using distinct(Plant) or distinct(City) to get a sense of the locations of these sites.
@@ -119,23 +121,36 @@ Add an R chunk to this qmd in your branch and try to answer each question.
 
 ```{r}
 ww |> 
-  #filter(State_Abbr == 'CA') |> 
+  filter(State_Abbr == 'IA') |> 
   group_by(Plant) |> 
   count() |> 
-  arrange(desc(n))
+  arrange(desc(n)) |> 
+  flextable::as_flextable(  )
 ```
 
 ## Making a Table of Sites
 
-Use gtsummary to make a pretty HTML table of sites in one state, arranged by number of samples collected. Try to pick different states.
+Use flextable::as_flextable() to make a pretty HTML table of sites in one state, arranged by number of samples collected. Try to pick different states.
 
 ## Making a Table of Infectious Agents
 
 Use gtsummary to make a pretty HTML table of the infectious agents being tracked, arranged by number of non-zero / non-missing samples collected.
 
+```{r}
+ww |>
+  pivot_longer(-(Site_Name:Population_Served)) |> 
+  filter(!str_detect(name, 'LCI')) |> 
+  filter(!str_detect(name, 'UCI')) |>
+  distinct(name) |> 
+  mutate(name = str_remove(name, '_g_dry_weight')) |> 
+  mutate(name = str_remove(name, '_g_dry_weigh')) |> 
+  mutate(name = str_remove(name, '_gc')) |> 
+  flextable::as_flextable(n=20)
+```
+
 ## Tracking Trends
 
-Use the select function and ggplot 2 line graphs to track time trends in one particular infection. Pick a seasonally trendy one like
+Use the select function and ggplot2 line graphs to track time trends in one particular infection. Pick a seasonally trendy one like
 
 -   RSV
 
@@ -161,10 +176,22 @@ Challenges
 
 ```{r}
 ww |> 
-  filter(City == "Ann Arbor") |> 
+  filter(State_Abbr == "MI") |> 
   mutate(
-    date = as.Date(paste0(Year, "-", Month, "-", Day))) 
-  
+    date = as.Date(paste0(Year, "-", Month, "-", Day))) |> 
+  select(date, Plant, Noro_G2_gc_g_dry_weight) |> 
+  ggplot(aes(x= date, y = Noro_G2_gc_g_dry_weight)) +
+  geom_line() +
+  geom_smooth()
+
+  ww |> 
+  filter(State_Abbr == "MI") |> 
+  mutate(
+    date = as.Date(paste0(Year, "-", Month, "-", Day))) |> 
+  select(date, Plant, Influenza_A_gc_g_dry_weight) |> 
+  ggplot(aes(x= date, y = Influenza_A_gc_g_dry_weight)) +
+  geom_line() +
+  geom_smooth()
 ```
 
 ## Share what You Have Learned
