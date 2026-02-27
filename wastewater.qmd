@@ -36,7 +36,7 @@ Then when asked for a Repository URL, paste in the following:
 
 then Click on the the "Create Project" button
 
-For future projects you can navigate to the project on Github, e.g. \
+For future projects you can navigate to the project on Github, e.g.\
 <https://github.com/higgi13425/wastewaterdata>
 
 Click on the dropdown arrow on the green Code button, and clone the HTTPS url, by clicking on the copy button to the right.
@@ -161,7 +161,7 @@ Challenges
 
 ## Share what You Have Learned
 
-Contribute to the repository
+Contribute to the repository =
 
 -   first, save your qmd once it is working
 
